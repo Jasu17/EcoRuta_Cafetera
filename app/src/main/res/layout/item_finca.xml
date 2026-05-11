@@ -51,6 +51,14 @@
                 android:layout_weight="1"
                 android:textSize="12sp"
                 android:textColor="#558B2F"/>
+            <TextView
+                android:id="@+id/tvGpsEstado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="8dp"/>
 
             <ImageButton
                 android:id="@+id/btnEliminar"

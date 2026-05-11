@@ -67,7 +67,11 @@ class FincaListFragment : Fragment() {
     private fun observarFincas() {
         viewModel.fincas.observe(viewLifecycleOwner) { lista ->
             adapter.submitList(lista)
-            binding.tvVacio.visibility = if (lista.isEmpty()) View.VISIBLE else View.GONE
+            binding.layoutVacio.visibility = if (lista.isEmpty()) View.VISIBLE else View.GONE
+            binding.toolbar.title = if (lista.isEmpty())
+                "Mis Fincas"
+            else
+                "Mis fincas (${lista.size})"
         }
     }
 

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ecoruta.cafetera.data.local.entity.FincaEntity
@@ -21,7 +22,7 @@ class FincaFormFragment : Fragment() {
 
     private var _binding: FragmentFincaFormBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: FincaViewModel by viewModels()
+    private val viewModel: FincaViewModel by activityViewModels()
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var latitud: Double = 0.0
@@ -117,7 +118,6 @@ class FincaFormFragment : Fragment() {
             longitud = longitud,
             tecnicoRegistra = viewModel.tecnicoActual
         )
-
         viewModel.guardarFinca(finca)
         findNavController().popBackStack()
     }

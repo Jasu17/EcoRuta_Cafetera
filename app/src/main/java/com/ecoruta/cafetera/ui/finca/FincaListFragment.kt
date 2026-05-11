@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ecoruta.cafetera.R
 import com.ecoruta.cafetera.databinding.FragmentFincaListBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class FincaListFragment : Fragment() {
 
@@ -58,7 +59,12 @@ class FincaListFragment : Fragment() {
 
     private fun configurarRecycler() {
         adapter = FincaAdapter { finca ->
-            viewModel.eliminarFinca(finca)
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Eliminar finca")
+                .setMessage("¿Deseas eliminar la finca '${finca.nombreFinca}'? Esta acción no se puede deshacer.")
+                .setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss() }
+                .setPositiveButton("Eliminar") { _, _ -> viewModel.eliminarFinca(finca) }
+                .show()
         }
         binding.rvFincas.layoutManager = LinearLayoutManager(requireContext())
         binding.rvFincas.adapter = adapter

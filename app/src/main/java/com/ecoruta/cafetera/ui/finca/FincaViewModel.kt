@@ -24,7 +24,8 @@ class FincaViewModel(application: Application) : AndroidViewModel(application) {
         val prefs = application.getSharedPreferences("ecoruta_prefs", Context.MODE_PRIVATE)
         tecnicoActual = prefs.getString("usuario_actual", "tecnico") ?: "tecnico"
 
-        fincas = repository.obtenerPorTecnico(tecnicoActual)
+        //fincas = repository.obtenerPorTecnico(tecnicoActual)
+        fincas = repository.obtenerTodas()
     }
 
     fun guardarFinca(finca: FincaEntity) = viewModelScope.launch {

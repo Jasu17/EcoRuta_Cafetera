@@ -10,9 +10,6 @@ interface FincaDao {
     @Query("SELECT * FROM fincas ORDER BY fechaRegistro DESC")
     fun obtenerTodas(): LiveData<List<FincaEntity>>
 
-    @Query("SELECT * FROM fincas WHERE tecnicoRegistra = :tecnico ORDER BY fechaRegistro DESC")
-    fun obtenerPorTecnico(tecnico: String): LiveData<List<FincaEntity>>
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertar(finca: FincaEntity)
 

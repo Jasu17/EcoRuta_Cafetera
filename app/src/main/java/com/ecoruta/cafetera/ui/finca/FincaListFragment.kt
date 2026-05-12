@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,7 +18,7 @@ class FincaListFragment : Fragment() {
 
     private var _binding: FragmentFincaListBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: FincaViewModel by activityViewModels()
+    private val viewModel: FincaViewModel by viewModels()
     private lateinit var adapter: FincaAdapter
 
     override fun onCreateView(
@@ -33,19 +32,25 @@ class FincaListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // NO usar setSupportActionBar - causa conflicto con el menú
         binding.toolbar.inflateMenu(R.menu.menu_finca_list)
+
         binding.toolbar.menu.findItem(R.id.action_logout)?.icon?.setTint(
             android.graphics.Color.WHITE
         )
+
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.action_logout -> { cerrarSesion(); true }
+                R.id.action_logout -> {
+                    cerrarSesion()
+                    true
+                }
                 else -> false
             }
         }
 
-        configurarRecycler()   // primero el adapter
-        observarFincas()       // luego el observe
+        configurarRecycler()
+        observarFincas()
 
         binding.fabAgregar.setOnClickListener {
             findNavController().navigate(R.id.action_list_to_form)
@@ -68,9 +73,14 @@ class FincaListFragment : Fragment() {
     private fun observarFincas() {
         viewModel.fincas.observe(viewLifecycleOwner) { lista ->
             adapter.submitList(lista)
-            binding.tvVacio.visibility = if (lista.isEmpty()) View.VISIBLE else View.GONE
+            binding.layoutVacio.visibility = if (lista.isEmpty()) View.VISIBLE else View.GONE
+            binding.toolbar.title = if (lista.isEmpty())
+                "Mis Fincas"
+            else
+                "Mis fincas (${lista.size})"
         }
     }
+
     private fun cerrarSesion() {
         requireContext()
             .getSharedPreferences("ecoruta_prefs", Context.MODE_PRIVATE)

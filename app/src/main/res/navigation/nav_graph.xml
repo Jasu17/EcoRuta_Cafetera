@@ -7,12 +7,16 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.ecoruta.cafetera.ui.auth.LoginFragment"
-        android:label="Login" >
+        android:label="Login">
         <action
             android:id="@+id/action_login_to_fincas"
             app:destination="@id/fincaListFragment"
             app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 
     <fragment
@@ -21,7 +25,11 @@
         android:label="Mis Fincas">
         <action
             android:id="@+id/action_list_to_form"
-            app:destination="@id/fincaFormFragment"/>
+            app:destination="@id/fincaFormFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 
     <fragment

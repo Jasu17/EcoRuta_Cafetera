@@ -2,6 +2,7 @@ package com.ecoruta.cafetera.ui.finca
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -18,8 +19,22 @@ class FincaAdapter(
         fun bind(finca: FincaEntity) {
             binding.tvNombreFinca.text = finca.nombreFinca
             binding.tvPropietario.text = "Propietario: ${finca.nombrePropietario}"
-            binding.tvMunicipio.text = " --${finca.municipio}"
-            binding.tvTipoCultivo.text = "-> ${finca.tipoCultivo} · ${finca.hectareas} ha"
+            binding.tvMunicipio.text = finca.municipio
+            binding.tvTipoCultivo.text = "${finca.tipoCultivo} · ${finca.hectareas} ha"
+
+            // Indicador GPS
+            if (finca.latitud != 0.0 && finca.longitud != 0.0) {
+                binding.tvGpsEstado.text = "GPS registrado"
+                binding.tvGpsEstado.setTextColor(
+                    ContextCompat.getColor(binding.root.context, android.R.color.holo_green_dark)
+                )
+            } else {
+                binding.tvGpsEstado.text = "Sin GPS"
+                binding.tvGpsEstado.setTextColor(
+                    ContextCompat.getColor(binding.root.context, android.R.color.holo_red_dark)
+                )
+            }
+
             binding.btnEliminar.setOnClickListener { onEliminar(finca) }
         }
     }

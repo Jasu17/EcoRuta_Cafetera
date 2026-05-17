@@ -8,9 +8,7 @@ class FincaRepository(private val dao: FincaDao) {
 
     fun obtenerTodas(): LiveData<List<FincaEntity>> = dao.obtenerTodas()
 
-    //fun obtenerPorTecnico(tecnico: String): LiveData<List<FincaEntity>> = dao.obtenerPorTecnico(tecnico)
-
-    //suspend fun guardar(finca: FincaEntity) = dao.insertar(finca)
+    fun obtenerPorTecnico(tecnico: String): LiveData<List<FincaEntity>> = dao.obtenerPorTecnico(tecnico)
 
     suspend fun actualizar(finca: FincaEntity) = dao.actualizar(finca)
 

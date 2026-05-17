@@ -37,4 +37,9 @@
         android:name="com.ecoruta.cafetera.ui.finca.FincaFormFragment"
         android:label="Registrar Finca"/>
 
+    <fragment
+        android:id="@+id/adminFragment"
+        android:name="com.ecoruta.cafetera.ui.admin.AdminFragment"
+        android:label="Gestión de Usuarios"/>
+
 </navigation>

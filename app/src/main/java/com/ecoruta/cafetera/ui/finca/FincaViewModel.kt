@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.ecoruta.cafetera.data.local.AppDatabase
 import com.ecoruta.cafetera.data.local.entity.FincaEntity
 import com.ecoruta.cafetera.data.repository.FincaRepository
+import com.ecoruta.cafetera.utils.SessionManager
 import kotlinx.coroutines.launch
 
 class FincaViewModel(application: Application) : AndroidViewModel(application) {
@@ -16,16 +17,20 @@ class FincaViewModel(application: Application) : AndroidViewModel(application) {
     val fincas: LiveData<List<FincaEntity>>
     val tecnicoActual: String
 
+    val esAdmin : Boolean
+
+
     init {
         val dao = AppDatabase.getInstance(application).fincaDao()
         repository = FincaRepository(dao)
+        tecnicoActual = SessionManager.getUsuario(application)
+        esAdmin = SessionManager.esAdmin(application)
 
-        // Leer el usuario de SharedPreferences
-        val prefs = application.getSharedPreferences("ecoruta_prefs", Context.MODE_PRIVATE)
-        tecnicoActual = prefs.getString("usuario_actual", "tecnico") ?: "tecnico"
-
-        //fincas = repository.obtenerPorTecnico(tecnicoActual)
-        fincas = repository.obtenerTodas()
+        fincas = if (esAdmin) {
+            repository.obtenerTodas()
+        } else {
+            repository.obtenerPorTecnico(tecnicoActual)
+        }
     }
 
     fun guardarFinca(finca: FincaEntity) = viewModelScope.launch {

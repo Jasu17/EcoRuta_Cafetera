@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ecoruta.cafetera.R
 import com.ecoruta.cafetera.databinding.FragmentFincaListBinding
+import com.ecoruta.cafetera.utils.SessionManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class FincaListFragment : Fragment() {
@@ -32,17 +33,23 @@ class FincaListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // NO usar setSupportActionBar - causa conflicto con el menú
         binding.toolbar.inflateMenu(R.menu.menu_finca_list)
-
+        binding.toolbar.overflowIcon?.setTint(android.graphics.Color.WHITE)
         binding.toolbar.menu.findItem(R.id.action_logout)?.icon?.setTint(
             android.graphics.Color.WHITE
         )
 
+        // Mostrar opción admin solo si es admin
+        if (viewModel.esAdmin) {
+            binding.toolbar.menu.add(0, R.id.action_admin, 0, "Gestionar usuarios")
+                .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER)
+        }
+
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.action_logout -> {
-                    cerrarSesion()
+                R.id.action_logout -> { cerrarSesion(); true }
+                R.id.action_admin -> {
+                    findNavController().navigate(R.id.adminFragment)
                     true
                 }
                 else -> false
@@ -82,12 +89,7 @@ class FincaListFragment : Fragment() {
     }
 
     private fun cerrarSesion() {
-        requireContext()
-            .getSharedPreferences("ecoruta_prefs", Context.MODE_PRIVATE)
-            .edit()
-            .clear()
-            .apply()
-
+        SessionManager.cerrarSesion(requireContext())
         findNavController().navigate(R.id.loginFragment)
     }
 
